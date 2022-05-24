@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2022 a las 11:57:19
+-- Tiempo de generación: 24-05-2022 a las 13:46:28
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -168,23 +168,24 @@ CREATE TABLE `student` (
   `name` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
   `second_lastname` varchar(255) NOT NULL,
-  `login` varchar(255) NOT NULL
+  `login` varchar(255) NOT NULL,
+  `grade` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `student`
 --
 
-INSERT INTO `student` (`sid`, `name`, `lastname`, `second_lastname`, `login`) VALUES
-(1, 'Pablo', 'Herrero', 'García', 'pablo.herrero'),
-(2, 'Paula', 'de Costa', 'Pereira', 'paula.decosta'),
-(3, 'Álvaro', 'Cabezas', 'Ruiz', 'alvaro.cabezas'),
-(4, 'Víctor Ernesto', 'Martínez', 'Leal', 'victor.martinez'),
-(5, 'Pablo', 'Toca', 'Berdejo', 'pablo.toca'),
-(6, 'Luis', 'Cachón', 'Ortiz', 'luis.cachon'),
-(7, 'Sergio', 'Díez', 'Fernández', 'sergio.diez'),
-(8, 'Atenea', 'Ruigomez', 'Noriega', 'atenea.ruigomez'),
-(9, 'Fernando', 'Parra', 'Galnares', 'fernando.parra');
+INSERT INTO `student` (`sid`, `name`, `lastname`, `second_lastname`, `login`, `grade`) VALUES
+(1, 'Pablo', 'Herrero', 'García', 'pablo.herrero', 'GII'),
+(2, 'Paula', 'de Costa', 'Pereira', 'paula.decosta', 'GII, PEARES'),
+(3, 'Álvaro', 'Cabezas', 'Ruiz', 'alvaro.cabezas', 'GII'),
+(4, 'Víctor Ernesto', 'Martínez', 'Leal', 'victor.martinez', 'GII'),
+(5, 'Pablo', 'Toca', 'Berdejo', 'pablo.toca', 'GII'),
+(6, 'Luis', 'Cachón', 'Ortiz', 'luis.cachon', 'GII'),
+(7, 'Sergio', 'Díez', 'Fernández', 'sergio.diez', 'GII'),
+(8, 'Atenea', 'Ruigomez', 'Noriega', 'atenea.ruigomez', 'GII'),
+(9, 'Fernando', 'Parra', 'Galnares', 'fernando.parra', 'GII');
 
 -- --------------------------------------------------------
 
@@ -202,51 +203,51 @@ CREATE TABLE `student_subject` (
 --
 
 INSERT INTO `student_subject` (`sid`, `id`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(2, 1),
-(2, 2),
-(2, 3),
-(2, 4),
-(2, 5),
-(3, 1),
-(3, 2),
-(3, 3),
-(3, 4),
-(3, 5),
-(4, 1),
-(4, 2),
-(4, 3),
-(4, 4),
-(4, 5),
-(5, 1),
-(5, 2),
-(5, 3),
-(5, 4),
-(5, 5),
-(6, 1),
-(6, 2),
-(6, 3),
-(6, 4),
-(6, 5),
-(7, 1),
-(7, 2),
-(7, 3),
-(7, 4),
-(7, 5),
-(8, 1),
-(8, 2),
-(8, 3),
-(8, 4),
-(8, 5),
-(9, 1),
-(9, 2),
-(9, 3),
-(9, 4),
-(9, 5);
+(1, '1'),
+(1, '2'),
+(1, '3'),
+(1, '4'),
+(1, '5'),
+(2, '1'),
+(2, '2'),
+(2, '3'),
+(2, '4'),
+(2, '5'),
+(3, '1'),
+(3, '2'),
+(3, '3'),
+(3, '4'),
+(3, '5'),
+(4, '1'),
+(4, '2'),
+(4, '3'),
+(4, '4'),
+(4, '5'),
+(5, '1'),
+(5, '2'),
+(5, '3'),
+(5, '4'),
+(5, '5'),
+(6, '1'),
+(6, '2'),
+(6, '3'),
+(6, '4'),
+(6, '5'),
+(7, '1'),
+(7, '2'),
+(7, '3'),
+(7, '4'),
+(7, '5'),
+(8, '1'),
+(8, '2'),
+(8, '3'),
+(8, '4'),
+(8, '5'),
+(9, '1'),
+(9, '2'),
+(9, '3'),
+(9, '4'),
+(9, '5');
 
 -- --------------------------------------------------------
 
@@ -255,7 +256,7 @@ INSERT INTO `student_subject` (`sid`, `id`) VALUES
 --
 
 CREATE TABLE `subject` (
-  `id` varchar(6) NOT NULL,
+  `id` int(6) NOT NULL,
   `code` varchar(6) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -265,11 +266,11 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`id`, `code`, `name`) VALUES
-('1', 'IYA049', 'Programación Web I'),
-('2', 'IYA003', 'Programación I'),
-('3', 'IYA022', 'Redes de Ordenadores'),
-('4', 'IYA011', 'Física'),
-('5', 'IYA024', 'Bases de Datos II');
+(1, 'IYA049', 'Programación Web I'),
+(2, 'IYA003', 'Programación I'),
+(3, 'IYA022', 'Redes de Ordenadores'),
+(4, 'IYA011', 'Física'),
+(5, 'IYA024', 'Bases de Datos II');
 
 -- --------------------------------------------------------
 
@@ -314,14 +315,14 @@ CREATE TABLE `user_subject` (
 --
 
 INSERT INTO `user_subject` (`uid`, `id`) VALUES
-(1, 1),
-(3, 2),
-(4, 5),
-(2, 4),
-(5, 3),
-(6, 2),
-(6, 3),
-(6, 5);
+(1, '1'),
+(3, '2'),
+(4, '5'),
+(2, '4'),
+(5, '3'),
+(6, '2'),
+(6, '3'),
+(6, '5');
 
 --
 -- Índices para tablas volcadas
@@ -367,6 +368,7 @@ ALTER TABLE `attendance`
 ALTER TABLE `student`
   MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
+--
 -- AUTO_INCREMENT de la tabla `subject`
 --
 ALTER TABLE `subject`

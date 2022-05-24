@@ -12,7 +12,7 @@
 	<div class="col-lg-5">
 		<div class="panel panel-danger">
 			<div class="panel-heading">
-			  <h3 class="panel-title text-center"><b>Pending Attendance</b></h3>
+			  <h3 class="panel-title text-center"><b>Asistencias Pendientes</b></h3>
 			</div>
 			<div class="panel-body text-center">
 				  <?php
@@ -41,10 +41,10 @@
 								  $stmtP->execute();
 								  $resultP = $stmtP->fetchAll(PDO::FETCH_ASSOC); 
 								  if(!empty($resultP)){
-									  print "<p><a href='index.php?subject=" . $subIdP . "&date=" . $dateCurrentYMD ."' style='text-decoration:none;'>Class: <strong style='color:#555;'>" . $rsubPending[$j]['name'] ."</strong> of <strong>" . $dateCurrent ."</strong></a> <span class='label label-success' style='border-radius:0%;'>Attendance Recorded</span> </p>";
+									  print "<p><a href='index.php?subject=" . $subIdP . "&date=" . $dateCurrentYMD ."' style='text-decoration:none;'>Clase: <strong style='color:#555;'>" . $rsubPending[$j]['name'] ."</strong> de <strong>" . $dateCurrent ."</strong></a> <span class='label label-success' style='border-radius:0%;'>Asistencia Registrada</span> </p>";
 								  }
 								  else {
-									  print "<p><a href='index.php?subject=" . $subIdP . "&date=" . $dateCurrentYMD ."' style='text-decoration:none;'>Class: <strong style='color:#555;'>" . $rsubPending[$j]['name'] ."</strong> of <strong>" . $dateCurrent ."</strong></a> <span class='label label-danger' style='border-radius:0%;'>Mark Attendance Now!</span></p>";
+									  print "<p><a href='index.php?subject=" . $subIdP . "&date=" . $dateCurrentYMD ."' style='text-decoration:none;'>Clase: <strong style='color:#555;'>" . $rsubPending[$j]['name'] ."</strong> de <strong>" . $dateCurrent ."</strong></a> <span class='label label-danger' style='border-radius:0%;'>Falta registrar asistencia</span></p>";
 								  }
 							  }
 							  
@@ -63,7 +63,7 @@
 	<div class="col-md-5">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-			  <h3 class="panel-title text-center"><b>Today's Attendance</b></h3>
+			  <h3 class="panel-title text-center"><b>Asistencia de hoy</b></h3>
 			</div>
 			<div class="panel-body text-center">
 				  <?php
@@ -84,10 +84,10 @@
 						  $stmt->execute();
 						  $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 						  if(!empty($result)){
-							  print "<p><a href='index.php?subject=" . $subId . "&date=" . $todayQuery ."' style='text-decoration:none;'>Class: <strong style='color:#555;'>" . $rsub[$i]['name'] ."</strong> of <strong>Today's</strong> (" . $today .")</a> <span class='label label-success' style='border-radius:0%;'>Attendance Recorded</span> </p>";
+							  print "<p><a href='index.php?subject=" . $subId . "&date=" . $todayQuery ."' style='text-decoration:none;'>Clase: <strong style='color:#555;'>" . $rsub[$i]['name'] ."</strong> de <strong>hoy</strong> (" . $today .")</a> <span class='label label-success' style='border-radius:0%;'>Asistencia registrada</span> </p>";
 						  }
 						  else {
-							  print "<p><a href='index.php?subject=" . $subId . "&date=" . $todayQuery ."' style='text-decoration:none;'>Class: <strong style='color:#555;'>" . $rsub[$i]['name'] ."</strong> of <strong>Today's</strong> (" . $today .")</a> <span class='label label-danger' style='border-radius:0%;'>Mark Attendance Now!</span></p>";
+							  print "<p><a href='index.php?subject=" . $subId . "&date=" . $todayQuery ."' style='text-decoration:none;'>Clase: <strong style='color:#555;'>" . $rsub[$i]['name'] ."</strong> de <strong>hoy</strong> (" . $today .")</a> <span class='label label-danger' style='border-radius:0%;'>Falta registrar asistencia</span></p>";
 						  }
 					  }
 				  ?>
@@ -98,10 +98,10 @@
 	<div class="col-lg-2">
 		<div class="panel panel-success">
 			<div class="panel-heading">
-			  <h3 class="panel-title text-center"><b>You Have:</b></h3>
+			  <h3 class="panel-title text-center"><b>Datos</b></h3>
 			</div>
 			<div class="panel-body text-center">
-			  <p><i class="fa fa-book"></i> <a href="index.php?page=studentinfo" style='text-decoration:none;'> <strong><span class="badge badge-pill badge-danger"><?php print $noOfSubject; ?></span></strong> Subject/s </a></p>
+			  <p><i class="fa fa-book"></i> <a href="index.php?page=studentinfo" style='text-decoration:none;'> <strong><span class="badge badge-pill badge-danger"><?php print $noOfSubject; ?></span></strong> Asiganturas </a></p>
 				  <?php
 					  $studentQuery = "SELECT COUNT(DISTINCT sid) as student_count FROM `user_subject` INNER JOIN student_subject WHERE user_subject.id = student_subject.id AND user_subject.uid = $userId";
 					  $stmtStudent = $conn->prepare($studentQuery); 
@@ -110,9 +110,9 @@
 				  ?>
 				  
 				  <?php if(!empty($resultStudent)) : ?>
-					  <p><i class="fa fa-users"></i> <a href="index.php?page=studentinfo" style='text-decoration:none;'><strong><span class="badge badge-pill badge-danger"><?php print $resultStudent[0]['student_count'] ?></span></strong> Student/s</a></p>
+					  <p><i class="fa fa-users"></i> <a href="index.php?page=studentinfo" style='text-decoration:none;'><strong><span class="badge badge-pill badge-danger"><?php print $resultStudent[0]['student_count'] ?></span></strong> Alumnos</a></p>
 				  <?php else: ?>
-					  <p><i class="fa fa-users"></i> No Students assigned to you!</p>
+					  <p><i class="fa fa-users"></i> No hay alumnos asignados</p>
 				  <?php endif; ?>
 			</div>
 		  </div>

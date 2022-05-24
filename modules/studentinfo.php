@@ -6,7 +6,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12">
-			<h1 class="page-header">Your Subjects and Students</h1>  
+			<h1 class="page-header">Alumnos</h1>  
 		</div>
 	</div>
 	<div class="row">
@@ -29,7 +29,7 @@
 						
 						for($i = 0; $i<$noOfSubject; $i++) {
 							$output .= $rsub[$i]['name'];
-							$output .= ',&nbsp;';
+							$output .= '&nbsp;';
 						}
 						print $output;
 					?>
@@ -49,14 +49,14 @@
 						<tr>
 							<th>Login</th>
 							<th>Nombre</th>
-							<th>Apellidos</th>
+							<th>Grado</th>
 							
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 							$outputData = '';
-							$studentQuery = "SELECT DISTINCT name, lastname, second_lastname, login FROM `user_subject` INNER JOIN student_subject INNER JOIN student WHERE user_subject.id = student_subject.id AND student_subject.sid = student.sid AND user_subject.uid = $uid";
+							$studentQuery = "SELECT DISTINCT name, lastname, second_lastname, login, grade FROM `user_subject` INNER JOIN student_subject INNER JOIN student WHERE user_subject.id = student_subject.id AND student_subject.sid = student.sid AND user_subject.uid = $uid ORDER BY lastname ";
 							
 							$stmtStudent = $conn->prepare($studentQuery); 
 							$stmtStudent->execute();
@@ -65,9 +65,8 @@
 							for($i = 0; $i<count($resultStudent); $i++) {
 								$outputData .= "<tr>";
 								$outputData .= "<td>" . $resultStudent[$i]['login'] . "</td>";
-								$outputData .= "<td>" . $resultStudent[$i]['name'] . "</td>";
-								$outputData .= "<td>" . $resultStudent[$i]['lastname'] . "</td>";
-								$outputData .= "<td>" . $resultStudent[$i]['second_lastname'] . "</td>";
+								$outputData .= "<td>" . $resultStudent[$i]['name'] ." ". $resultStudent[$i]['lastname'] ." " . $resultStudent[$i]['second_lastname'] . "</td>";
+								$outputData .= "<td>" . $resultStudent[$i]['grade'] ."</td>";
 								$outputData .= "</tr>";
 							}
 							print $outputData;

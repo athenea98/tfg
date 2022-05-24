@@ -13,7 +13,7 @@
 		<div class="col-md-12 col-lg-12">
 			<form action="index.php" method="get" class="form-inline" id="subjectForm" data-toggle="validator">
 				<div class="form-group">
-					<label for="select" class="control-label">Subject:</label>
+					<label for="select" class="control-label">Asignatura</label>
 					<?php
 											
 						$query_subject = "SELECT subject.name, subject.id from subject 
@@ -35,11 +35,11 @@
 				</div>
 
 				<div class="form-group" data-provide="datepicker">
-					<label for="select" class="control-label">Date:</label>
+					<label for="select" class="control-label">Fecha:</label>
 					<input type="date" class="form-control" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>" required>
 				</div>
 
-				<button type="submit" class="btn btn-danger" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Load</button>
+				<button type="submit" class="btn btn-danger" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
 			</form>
 				
 
@@ -56,15 +56,15 @@
 			<form action="index.php" method="post">
 			
 			<div class="margin-top-bottom-medium">
-				<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Save Attendance</button>
+				<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
 			</div>
 			
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
 						<th class="text-center">Login</th>
-						<th class="text-center">Student's Name</th>
-						<th class="text-center"><input type="checkbox" class="chk-head" /> All Present</th>
+						<th class="text-center">Alumno</th>
+						<th class="text-center"><input type="checkbox" class="chk-head" /> Todos presentes</th>
 					</tr>
 				</thead>
 
@@ -86,7 +86,7 @@
 
 					}
 
-					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$_GET['subject']}  ORDER BY student.sid";
+					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$_GET['subject']}  ORDER BY lastname";
 					$stu=$conn->query($qu);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
 
@@ -98,7 +98,7 @@
 
 						if($updateFlag) {
 							echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'>" ."<input type='hidden' name='att_id[]' value='" . $attData[$i]['aid'] . "'>".  "</td>";
-							echo"<td>".$rstu[$i]['name']."</td>";
+							echo"<td>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
 
 							
 								if(($rstu[$i]['sid'] ==  $attData[$i]['sid']) && ($attData[$i]['ispresent']))
@@ -113,7 +113,7 @@
 							}
 							else {
 								echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'></td>";
-								echo"<td>".$rstu[$i]['name']."</td>";
+								echo"<td>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
 								echo"<td><input class='chk-present' type='checkbox' name='chbox[]' value='" . $rstu[$i]['sid'] . "'></td>";	
 							}
 							
@@ -133,7 +133,7 @@
 
 			<input type="hidden" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>">
 			<input type="hidden" name="subject" value="<?php print isset($_GET['subject']) ? $_GET['subject'] : ''; ?>">
-			<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Save Attendance</button>
+			<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
 			
 			</form>
 			

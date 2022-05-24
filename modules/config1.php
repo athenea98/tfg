@@ -3,7 +3,7 @@
 	//  Development connection
 	
 	$databaseHost = 'localhost';
-	$databaseName = 'studentattdb';
+	$databaseName = 'uneasistencias';
 	$databaseUsername = 'root';
 	$databasePassword = '';
 

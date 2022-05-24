@@ -2,17 +2,9 @@
 		<footer id="footer">
 			<div id="">
 			
-
-			
+				<li>Copyright 2022. Universidad Europea del Atlántico</li> 
+				<li>Trabajo de Fin de Grado GII</li> 
 				
-			</p>
-			</div>
-			<div id="links">
-			Developers: 
-				<a href="#" taget="_blank">Mohit Khedkar </a> 
-				<a href="#" taget="_blank"> Megha Pal </a> 
-				<a href="#" taget="_blank"> Rutuja Vetal</a> 
-				<a href="#" taget="_blank"> Niraj Patil</a> 
 			</div>
 			
 		</footer>

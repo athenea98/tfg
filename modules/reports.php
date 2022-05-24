@@ -8,7 +8,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12">
-			<h1 class="page-header">Reports</h1>  
+			<h1 class="page-header">Reportes</h1>  
 		</div>
 	</div>
 
@@ -16,7 +16,7 @@
 		<div class="col-md-12 col-lg-12">
 			<form action="" method="GET" class="form-inline" data-toggle="validator">
 				<div class="form-group ">
-					<label for="select" class="control-label">Subject:</label>
+					<label for="select" class="control-label">Asignatura:</label>
 					<?php
 						$query_subject = "SELECT subject.name, subject.id from subject 
 					INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = $suid  ORDER BY subject.name";
@@ -42,17 +42,17 @@
 				</div>
 				
 				<div class="form-group" data-provide="datepicker">
-					<label for="select" class="control-label">From:</label>
+					<label for="select" class="control-label">Fecha de inicio:</label>
 					<input type="date" name="sdate" class="form-control" value="<?php print isset($_GET['sdate']) ? $_GET['sdate'] : ''; ?>" required>
 				</div>
 				
 				<div class="form-group" data-provide="datepicker">
-					<label for="select" class="control-label">To:</label>
+					<label for="select" class="control-label">Fecha final:</label>
 					<input type="date" name="edate" class="form-control" value="<?php print isset($_GET['edate']) ? $_GET['edate'] : ''; ?>" required>
 				</div>
 				
 				<input type="hidden" name="page" value="reports">
-				<button type="submit" class="btn btn-danger" name="submit" style='border-radius:0%;'><i class="glyphicon glyphicon-filter"></i> Filter Student</button>
+				<button type="submit" class="btn btn-danger" name="submit" style='border-radius:0%;'><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
 			</form>
 		</div>	
 	</div>
