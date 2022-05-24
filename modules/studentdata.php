@@ -5,10 +5,10 @@
 	$absent=0;
 	$nottaken=0;
 	$ttaken=0;
-	$strno=$_POST['login'];
+	$strno=$_POST['rollno'];
 	
 	// Student data collection
-	$sql = "SELECT name,sid,login FROM student where $strno=login";
+	$sql = "SELECT name, lastname, login, sid,rollno FROM student where $strno=rollno";
 	$stmt = $conn->prepare($sql); 
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
@@ -17,21 +17,21 @@
 <?php if (count($result)) : ?>
 	
 		<?php
-			$tempnm=$result[0]['name'];
+			$tempnm=$result[0]['login'];
 			$tempid=$result[0]['sid'];
-			$login=$result[0]['login'];
+			$rollno=$result[0]['rollno'];
 		?>
 
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 col-lg-12">
-					<h1 class="page-header"><?php print $tempnm; ?> - <?php print $login; ?> Attendance Report</h1>  
+					<h1 class="page-header"><?php print $tempnm; ?> - Asistencias</h1>  
 				</div>
 			</div>
 			<div class="row">
 			<div class="col-md-12 col-lg-12">
 			<?php
-				if ($_POST['student'] === 'y' && isset($_POST['login'])) {
+				if ($_POST['student'] === 'y' && isset($_POST['rollno'])) {
 			
 				 $sq= "SELECT DISTINCT date FROM attendance ORDER BY date";
 				 $stmt2 = $conn->prepare($sq);
@@ -41,14 +41,14 @@
 					 //echo count($result2);
 						 
 				echo "<table class='table table-striped table-hover reports-table'>";
-					 echo"<tr><th>Subject</th>";
+					 echo"<tr><th>Asignatura</th>";
 						for($k=0;$k<count($result2);$k++)
 						{
 							$tmdat=$result2[$k]['date'];
 							echo"<th>".date("d-m-Y",$tmdat)."</th>";
 						}//echo(date("Y-m-d",$t));
 							
-						echo"<th>Total</th><th colspan='2'>%</th></tr>";
+						echo"<th>Total</th><th colspan='2'>Porcentaje</th></tr>";
 					
 					 $ssql = "SELECT id FROM student_subject where $tempid=sid";
 					 $stmt3 = $conn->prepare($ssql);
@@ -79,7 +79,7 @@
 						$ttaken++;
 						$dttaken++;
 						 if (empty($result1)) {
-								echo " <td><span class='badge' style='background-color:#d44845;'>Not Taken</span></td>";
+								echo " <td><span class='badge' style='background-color:#d44845;'>Sin registrar</span></td>";
 								$nottaken++;
 								$dnottaken++;
 						 }else
@@ -87,13 +87,13 @@
 							$res=$result1[0]['ispresent'];
 							if($res==1)
 							{
-								echo " <td><span class='badge' style='background-color:#3C923C;'>Present</span></td>";
+								echo " <td><span class='badge' style='background-color:#3C923C;'>Presentado</span></td>";
 								$present++;
 								$dpresent++;	
 							}
 								else
 								{
-									echo "<td><span class='text-danger'>Absent</span></td>";
+									echo "<td><span class='text-danger'>Falta</span></td>";
 									$absent++;
 									$dabsent++;
 								}
@@ -115,15 +115,7 @@
 					$tlec=$ttaken-$nottaken;
 					$tper=(100*$present)/$tlec;
 					
-					echo '<div class="panel panel-success">
-                <div class="panel-heading">
-                  <h3 class="panel-title">Summary Of Attendance</h3>
-                </div>
-                <div class="panel-body">
-                  <p>Present Days out of Working Days:&nbsp;<strong>' . $present . '/' . $tlec . '</strong></p>
-									<p>Attendance Percentage:&nbsp;<strong>' .$tper. '&nbsp;%</strong></p>
-                </div>
-              </div>';
+		
 					
 				}
 				else {

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2022 a las 13:46:28
--- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 8.0.2
+-- Tiempo de generación: 24-05-2022 a las 19:49:23
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -155,7 +155,51 @@ INSERT INTO `attendance` (`aid`, `sid`, `date`, `ispresent`, `uid`, `id`) VALUES
 (367, 5, 1619820000, 1, 1, '1'),
 (366, 4, 1619820000, 1, 1, '1'),
 (365, 3, 1619820000, 1, 1, '1'),
-(660, 6, 1619906400, 1, 6, '3');
+(660, 6, 1619906400, 1, 6, '3'),
+(683, 3, 1653343200, 0, 1, '1'),
+(684, 6, 1653343200, 0, 1, '1'),
+(685, 2, 1653343200, 0, 1, '1'),
+(686, 7, 1653343200, 0, 1, '1'),
+(687, 1, 1653343200, 0, 1, '1'),
+(688, 4, 1653343200, 0, 1, '1'),
+(689, 9, 1653343200, 0, 1, '1'),
+(690, 8, 1653343200, 0, 1, '1'),
+(691, 5, 1653343200, 0, 1, '1'),
+(692, 3, 1653343200, 1, 5, '3'),
+(693, 6, 1653343200, 1, 5, '3'),
+(694, 2, 1653343200, 0, 5, '3'),
+(695, 7, 1653343200, 1, 5, '3'),
+(696, 1, 1653343200, 0, 5, '3'),
+(697, 4, 1653343200, 1, 5, '3'),
+(698, 9, 1653343200, 1, 5, '3'),
+(699, 8, 1653343200, 1, 5, '3'),
+(700, 5, 1653343200, 1, 5, '3'),
+(701, 3, 1653343200, 1, 5, '5'),
+(702, 6, 1653343200, 1, 5, '5'),
+(703, 2, 1653343200, 1, 5, '5'),
+(704, 7, 1653343200, 1, 5, '5'),
+(705, 1, 1653343200, 1, 5, '5'),
+(706, 4, 1653343200, 1, 5, '5'),
+(707, 9, 1653343200, 1, 5, '5'),
+(708, 5, 1653343200, 1, 5, '5'),
+(709, 3, 1653256800, 1, 5, '3'),
+(710, 6, 1653256800, 1, 5, '3'),
+(711, 2, 1653256800, 1, 5, '3'),
+(712, 7, 1653256800, 1, 5, '3'),
+(713, 1, 1653256800, 1, 5, '3'),
+(714, 4, 1653256800, 1, 5, '3'),
+(715, 9, 1653256800, 1, 5, '3'),
+(716, 8, 1653256800, 1, 5, '3'),
+(717, 5, 1653256800, 1, 5, '3'),
+(718, 3, 1653256800, 1, 1, '1'),
+(719, 6, 1653256800, 0, 1, '1'),
+(720, 2, 1653256800, 0, 1, '1'),
+(721, 7, 1653256800, 1, 1, '1'),
+(722, 1, 1653256800, 0, 1, '1'),
+(723, 4, 1653256800, 1, 1, '1'),
+(724, 9, 1653256800, 0, 1, '1'),
+(725, 8, 1653256800, 0, 1, '1'),
+(726, 5, 1653256800, 1, 1, '1');
 
 -- --------------------------------------------------------
 
@@ -169,23 +213,24 @@ CREATE TABLE `student` (
   `lastname` varchar(255) NOT NULL,
   `second_lastname` varchar(255) NOT NULL,
   `login` varchar(255) NOT NULL,
-  `grade` varchar(255) NOT NULL
+  `grade` varchar(255) NOT NULL,
+  `rollno` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `student`
 --
 
-INSERT INTO `student` (`sid`, `name`, `lastname`, `second_lastname`, `login`, `grade`) VALUES
-(1, 'Pablo', 'Herrero', 'García', 'pablo.herrero', 'GII'),
-(2, 'Paula', 'de Costa', 'Pereira', 'paula.decosta', 'GII, PEARES'),
-(3, 'Álvaro', 'Cabezas', 'Ruiz', 'alvaro.cabezas', 'GII'),
-(4, 'Víctor Ernesto', 'Martínez', 'Leal', 'victor.martinez', 'GII'),
-(5, 'Pablo', 'Toca', 'Berdejo', 'pablo.toca', 'GII'),
-(6, 'Luis', 'Cachón', 'Ortiz', 'luis.cachon', 'GII'),
-(7, 'Sergio', 'Díez', 'Fernández', 'sergio.diez', 'GII'),
-(8, 'Atenea', 'Ruigomez', 'Noriega', 'atenea.ruigomez', 'GII'),
-(9, 'Fernando', 'Parra', 'Galnares', 'fernando.parra', 'GII');
+INSERT INTO `student` (`sid`, `name`, `lastname`, `second_lastname`, `login`, `grade`, `rollno`) VALUES
+(1, 'Pablo', 'Herrero', 'García', 'pablo.herrero', 'GII', '1'),
+(2, 'Paula', 'de Costa', 'Pereira', 'paula.decosta', 'GII, PEARES', '2'),
+(3, 'Álvaro', 'Cabezas', 'Ruiz', 'alvaro.cabezas', 'GII', '3'),
+(4, 'Víctor Ernesto', 'Martínez', 'Leal', 'victor.martinez', 'GII', '4'),
+(5, 'Pablo', 'Toca', 'Berdejo', 'pablo.toca', 'GII', '5'),
+(6, 'Luis', 'Cachón', 'Ortiz', 'luis.cachon', 'GII', '6'),
+(7, 'Sergio', 'Díez', 'Fernández', 'sergio.diez', 'GII', '7'),
+(8, 'Atenea', 'Ruigomez', 'Noriega', 'atenea.ruigomez', 'GII', '8'),
+(9, 'Fernando', 'Parra', 'Galnares', 'fernando.parra', 'GII', '9');
 
 -- --------------------------------------------------------
 
@@ -242,7 +287,6 @@ INSERT INTO `student_subject` (`sid`, `id`) VALUES
 (8, '2'),
 (8, '3'),
 (8, '4'),
-(8, '5'),
 (9, '1'),
 (9, '2'),
 (9, '3'),
@@ -322,7 +366,8 @@ INSERT INTO `user_subject` (`uid`, `id`) VALUES
 (5, '3'),
 (6, '2'),
 (6, '3'),
-(6, '5');
+(6, '5'),
+(5, '5');
 
 --
 -- Índices para tablas volcadas
@@ -360,7 +405,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=683;
+  MODIFY `aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=727;
 
 --
 -- AUTO_INCREMENT de la tabla `student`

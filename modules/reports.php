@@ -20,6 +20,9 @@
 					<?php
 						$query_subject = "SELECT subject.name, subject.id from subject 
 					INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = $suid  ORDER BY subject.name";
+
+					
+			
 						$sub=$conn->query($query_subject);
 						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
 						//print_r($rsub);
@@ -98,8 +101,8 @@
 					echo "<table class='table table-striped table-hover reports-table'>";
 					echo "<thead>";
 					echo "<tr>";
-					echo "<th>Roll</th>";
-					echo "<th>Student's Name</th>";
+					echo "<th>Login</th>";
+					echo "<th>Alumno</th>";
 					for($k=$sdate;$k<=$edate;$k=$k+86400)
 					{
 						$thisDate = date( 'd-m-Y', $k );
@@ -110,8 +113,8 @@
 							echo "<th>".$thisDate."</th>";
 						}
 					}
-					echo "<th>Present/Total</th>";
-					echo "<th>Precentage</th>";;
+					echo "<th>Presente/Total</th>";
+					echo "<th>Porcentaje</th>";;
 					echo "</tr>";
 					echo "</thead>";
 					echo "</tbody>";
@@ -123,7 +126,7 @@
 						$totlec=0;
 						$perc=0;
 						echo"<tr><td><h6>".$rstu[$i]['login']."</h6></td>";
-						echo "<td><h5>".$rstu[$i]['name']."</h5></td>";
+						echo "<td><h5>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</h5></td>";
 						$dsid=$rstu[$i]['sid'];
 						
 						for($j=$sdate;$j<=$edate;$j=$j+86400)
@@ -149,16 +152,16 @@
 									if($result[0]['ispresent']==1)
 									{
 										$present++;
-										echo"<td><span class='text-success'>Present</span></td>";
+										echo"<td><span class='text-success'>Presente</span></td>";
 									}
 									else
 									{
-										echo"<td><span class='text-danger'>Absent</span></td>";
+										echo"<td><span class='text-danger'>Falta</span></td>";
 										$absent++;
 									}
 								}else
 								{
-									echo "<td><a href='index.php?subject=" . $selsub . "&date=" . $currentDate . "'><button type='button' class='btn btn-success btn-sm' style='border-radius:0%'>Take Attendance</button></a></td>";
+									echo "<td><a href='index.php?subject=" . $selsub . "&date=" . $currentDate . "'><button type='button' class='btn btn-success btn-sm' style='border-radius:0%'>Falta Asistencia</button></a></td>";
 								}
 							}
 						}
@@ -177,7 +180,7 @@
 				{
 					print '<div class="alert alert-dismissible alert-danger">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Sorry!</strong>Please enter correct date range.
+                <strong>Error</strong> No se puede realizar registros futuros
               </div>';
 				}
 

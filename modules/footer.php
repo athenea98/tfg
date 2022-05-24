@@ -2,8 +2,7 @@
 		<footer id="footer">
 			<div id="">
 			
-				<li>Copyright 2022. Universidad Europea del Atlántico</li> 
-				<li>Trabajo de Fin de Grado GII</li> 
+				<a>Universidad Europea del Atlántico</a> 
 				
 			</div>
 			

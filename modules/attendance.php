@@ -144,7 +144,7 @@
 			<p>&nbsp;</p>
 			<div class="alert alert-dismissible alert-danger">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<strong>Sorry!</strong> Attendance cannot be recorded for future dates!.
+				<strong>Error</strong> No se puede realizar registros futuros
 			</div>	
 			
 			<?php
@@ -188,7 +188,7 @@
 							}		
 						echo '<p>&nbsp;</p><div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Well done!</strong> Attendance Recorded Successfully!.
+                <strong>Asistencia guardada.
               </div>';	
 
 					}
@@ -227,7 +227,7 @@
 						}
 						echo '<p>&nbsp;</p><div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Well done!</strong> Attendance Recorded Successfully!.
+                <strong>Asistencia guardada.
               </div>';	
 					}
 				}			
