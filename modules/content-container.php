@@ -19,7 +19,6 @@
 							if (isset($_GET['page'])) {
 								$page = $_GET['page'];
 								switch ($page) {
-									case 'dashboard':
 									case 'reports':
 									case 'logout':
 									case 'help':
@@ -46,7 +45,7 @@
 										include 'modules/studentspage.php';
 										break;
 									default:
-										include 'modules/login.php';
+										
 										break;
 								}
 							}

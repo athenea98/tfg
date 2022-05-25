@@ -2,7 +2,7 @@
 		<footer id="footer">
 			<div id="">
 			
-				<a>Universidad Europea del Atlántico</a> 
+				<a>Trabajo de Fin de Grado</a> 
 				
 			</div>
 			

@@ -33,13 +33,14 @@
 						echo"</select>";
 					?>									
 				</div>
+	
 
 				<div class="form-group" data-provide="datepicker">
 					<label for="select" class="control-label">Fecha:</label>
 					<input type="date" class="form-control" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>" required>
 				</div>
 
-				<button type="submit" class="btn btn-danger" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
+				<button type="submit" class="btn btn-success" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
 			</form>
 				
 
@@ -142,7 +143,7 @@
 			?>
 			
 			<p>&nbsp;</p>
-			<div class="alert alert-dismissible alert-danger">
+			<div class="alert alert-dismissible alert-success">
 				<button type="button" class="close" data-dismiss="alert">×</button>
 				<strong>Error</strong> No se puede realizar registros futuros
 			</div>	
@@ -158,7 +159,7 @@
 				if (isset($_POST['sbt_top'])) {
 					if(isset($_POST['updateData']) && ($_POST['updateData'] == 1) ) {
 							
-						// prepare sql and bind parameters
+						
 					
 							$id = $_POST['subject'];
 							$uid = $_SESSION['uid'];
@@ -172,8 +173,7 @@
 							
 							for($j = 0; $j < count($st_sid); $j++)
 							{
-									//echo "hii";
-								// UPDATE `attendance` SET `ispresent` = '1' WHERE `attendance`.`aid` = 79;
+									
 
 									$stmtInsert = $conn->prepare("UPDATE attendance SET ispresent = :isMarked WHERE aid = :aid"); 
 														
@@ -184,7 +184,7 @@
 									$stmtInsert->bindParam(':isMarked', $p);
 									$stmtInsert->bindParam(':aid', $attt_aid[$j]); 
 									$stmtInsert->execute();
-								//echo "data upadted";
+								
 							}		
 						echo '<p>&nbsp;</p><div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -194,7 +194,7 @@
 					}
 					else {
 						
-						// prepare sql and bind parameters
+						
 							$date = $_POST['date'];
 						$tstamp = strtotime($date);
 							$id = $_POST['subject'];
@@ -208,7 +208,7 @@
 							
 							for($j = 0; $j < count($st_sid); $j++)
 							{
-									//echo "hii";
+									
 									$stmtInsert = $conn->prepare("INSERT INTO attendance (sid, date, ispresent, uid, id) 
 								VALUES (:sid, :date, :ispresent, :uid, :id)");
 									
@@ -223,7 +223,7 @@
 									$stmtInsert->bindParam(':uid', $uid);
 									$stmtInsert->bindParam(':id', $id); 
 									$stmtInsert->execute();
-							//	echo "data upadted".$j;
+							
 						}
 						echo '<p>&nbsp;</p><div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>

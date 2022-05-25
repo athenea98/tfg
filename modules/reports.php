@@ -1,8 +1,6 @@
 <?php include 'config1.php';?>
 <?php
-	//echo"Take a view here";
 	$suid = $_SESSION['uid'];
-	//echo $suid;
 ?>
 
 <div class="container">
@@ -25,10 +23,9 @@
 			
 						$sub=$conn->query($query_subject);
 						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
-						//print_r($rsub);
 						$subnm=$rsub[0]['name'];
 						$subid=$rsub[0]['id'];
-						//echo "<h3>".$subnm." ".$subid."</h3>";
+						
 					
 						echo "<select name='subject' class='form-control' required='required'>";
 						for($i = 0; $i<count($rsub); $i++)
@@ -43,6 +40,9 @@
 						echo "</select><br>";
 					?>
 				</div>
+				<div class="form-group">
+         
+        </div>
 				
 				<div class="form-group" data-provide="datepicker">
 					<label for="select" class="control-label">Fecha de inicio:</label>
@@ -53,9 +53,9 @@
 					<label for="select" class="control-label">Fecha final:</label>
 					<input type="date" name="edate" class="form-control" value="<?php print isset($_GET['edate']) ? $_GET['edate'] : ''; ?>" required>
 				</div>
-				
+				<button type="button" name="create_report" id="create_report" class="btn btn-success btn-sm">Generar PDF</button>
 				<input type="hidden" name="page" value="reports">
-				<button type="submit" class="btn btn-danger" name="submit" style='border-radius:0%;'><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
+				<button type="submit" class="btn btn-success" name="submit" style='border-radius:0%;'><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
 			</form>
 		</div>	
 	</div>
@@ -89,15 +89,11 @@
 				
 				if(($sdate<$t) && ($edate<=$t) && ($edate >= $sdate))
 				{
-					// echo "sub id".$selsub."<br>";
-					// echo "user id".$suid."<br>";
-					// echo "starting date:".$sdat." "."ending date:".$edat."<br>";
-					// $query_student="SELECT * from student ";
+					
 					$query_student = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$selsub}  ORDER BY student.sid";
 					$stu=$conn->query($query_student);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
-				//	print_r($rstu);
-				//	echo "<br><br>--------------<br>";
+				
 					echo "<table class='table table-striped table-hover reports-table'>";
 					echo "<thead>";
 					echo "<tr>";
@@ -120,7 +116,7 @@
 					echo "</tbody>";
 					for($i=0;$i<count($rstu);$i++)
 					{
-						//echo $i."--"."<br>";
+						
 						$present=0;
 						$absent=0;
 						$totlec=0;
@@ -131,9 +127,7 @@
 						
 						for($j=$sdate;$j<=$edate;$j=$j+86400)
 						{
-							 //$thisDate = date( 'Y-m-d', $j );
-							 //echo "$j"."=".$thisDate."<br>";
-				
+							 
 							$weekday= date("l", $j );
 							$currentDate = date('Y-m-d', $j);
 							$normalized_weekday = strtolower($weekday);
@@ -147,7 +141,7 @@
 								$stmt->execute();
 								$result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 								if(!empty($result)){
-								//print_r($result);
+								
 									$totlec++;
 									if($result[0]['ispresent']==1)
 									{
@@ -185,12 +179,182 @@
 				}
 
 				}else{
-					 // echo"<h3>Please enter detail</h3>";
 				}
 
-
-
 			?>
+<?php
+
+//report
+
+if(isset($_GET["action"]))
+{
+	include('config1.php');
+	require_once 'pdf.php';
+	session_start();
+	if($_GET["action"] == "attendance_report")
+	{
+		if(isset($_GET["sdate"], $_GET["edate"]))
+		{
+			$pdf = new Pdf();
+			$query = "
+			SELECT date FROM attendance 
+			WHERE uid = '".$_SESSION["uid"]."' 
+			AND (date BETWEEN '".$_GET["sdate"]."' AND '".$_GET["edate"]."')
+			GROUP BY date 
+			ORDER BY date ASC
+			";
+			$statement = $connect->prepare($query);
+			$statement->execute();
+			$result = $statement->fetchAll();
+			$output = '
+				<style>
+				@page { margin: 20px; }
+				
+				</style>
+				<p>&nbsp;</p>
+				<h3 align="center">Attendance Report</h3><br />';
+			foreach($result as $row)
+			{
+				$output .= '
+				<table width="100%" border="0" cellpadding="5" cellspacing="0">
+			        <tr>
+			        	<td><b>Date - '.$row["date"].'</b></td>
+			        </tr>
+			        <tr>
+			        	<td>
+			        		<table width="100%" border="1" cellpadding="5" cellspacing="0">
+			        			<tr>
+			        				<td><b>Student Name</b></td>
+			        				<td><b>Roll Number</b></td>
+			        				<td><b>Grade</b></td>
+			        				<td><b>Attendance Status</b></td>
+			        			</tr>
+				';
+				$sub_query = "
+				SELECT * FROM attendance 
+			    INNER JOIN student 
+			    ON student.sid = attendance.sid 
+			    INNER JOIN student_subject 
+			    ON student_subject.sid = student_subject.id 
+			    WHERE uid = '".$_SESSION["uid"]."' 
+				AND date = '".$row["date"]."'
+				";
+				$statement = $connect->prepare($sub_query);
+				$statement->execute();
+				$sub_result = $statement->fetchAll();
+				foreach($sub_result as $sub_row)
+				{
+					$output .= '
+					<tr>
+						<td>'.$sub_row["name"].'</td>
+						<td>'.$sub_row["rollno"].'</td>
+						<td>'.$sub_row["grade"].'</td>
+						<td>'.$sub_row["ispresent"].'</td>
+					</tr>
+					';
+				}
+				$output .= '
+					</table>
+					</td>
+					</tr>
+				</table><br />
+				';
+			}
+			$file_name = 'Attendance Report.pdf';
+			$pdf->loadHtml($output);
+			$pdf->render();
+			$pdf->stream($file_name, array("Attachment" => false));
+			exit(0);
+		}
+	}
+
+	if($_GET["action"] == "student_report")
+	{
+		if(isset($_GET["sid"], $_GET["sdate"], $_GET["edate"]))
+		{
+			$pdf = new Pdf();
+			$query = "
+			SELECT * FROM student 
+			INNER JOIN stundent_subject
+			ON stundent_subject.sid = stundent_subject.id
+			WHERE student.sid = '".$_GET["sid"]."' 
+			";
+
+			$statement = $connect->prepare($query);
+			$statement->execute();
+			$result = $statement->fetchAll();
+			$output = '';
+			foreach($result as $row)
+			{
+				$output .= '
+				<style>
+				@page { margin: 20px; }
+				
+				</style>
+				<p>&nbsp;</p>
+				<h3 align="center">Attendance Report</h3><br /><br />
+				<table width="100%" border="0" cellpadding="5" cellspacing="0">
+			        <tr>
+			            <td width="25%"><b>Student Name</b></td>
+			            <td width="75%">'.$row["student_name"].'</td>
+			        </tr>
+			        <tr>
+			            <td width="25%"><b>Roll Number</b></td>
+			            <td width="75%">'.$row["student_roll_number"].'</td>
+			        </tr>
+			        <tr>
+			            <td width="25%"><b>Grade</b></td>
+			            <td width="75%">'.$row["grade_name"].'</td>
+			        </tr>
+			        <tr>
+			        	<td colspan="2" height="5">
+			        		<h3 align="center">Attendance Details</h3>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td colspan="2">
+			        		<table width="100%" border="1" cellpadding="5" cellspacing="0">
+			        			<tr>
+			        				<td><b>Attendance Date</b></td>
+			        				<td><b>Attendance Status</b></td>
+			        			</tr>
+				';
+				$sub_query = "
+				SELECT * FROM attendance 
+				WHERE sid = '".$_GET["sid"]."' 
+				AND (date BETWEEN '".$_GET["sate"]."' AND '".$_GET["edate"]."') 
+				ORDER BY date ASC
+				";
+				$statement = $connect->prepare($sub_query);
+				$statement->execute();
+				$sub_result = $statement->fetchAll();
+				foreach($sub_result as $sub_row)
+				{
+					$output .= '
+					<tr>
+						<td>'.$sub_row["date"].'</td>
+						<td>'.$sub_row["ispresent"].'</td>
+					</tr>
+					';
+				}
+				$output .= '
+						</table>
+					</td>
+					</tr>
+				</table>
+				';
+				$file_name = 'Attendance Report.pdf';
+				$pdf->loadHtml($output);
+				$pdf->render();
+				$pdf->stream($file_name, array("Attachment" => false));
+				exit(0);
+			}
+		}
+	}
+}
+
+
+?>
 			</div>
 		</div>
 	</div>

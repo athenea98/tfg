@@ -47,7 +47,7 @@
         </div>
 				
 				<div class="form-group">
-					<input type="submit" name="submit" class="btn btn-danger btn-block" style="border-radius:0%" value="Acceder">
+					<input type="submit" name="submit" class="btn btn-success btn-block" style="border-radius:0%" value="Acceder">
 				</div>
 				
 				<input type="hidden" name="student" value="y" />

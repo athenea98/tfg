@@ -17,26 +17,34 @@
   
   	<div id="wrapper">
     <div class="overlay"></div>
-    
-    
     <h1>UneAsistencias</h1>
+      <div class="logo">
     <img src="https://www.uneatlantico.es/themes/uneatlantico/logo.svg">
+    </div>
+   
     <style>
       h1{
-        margin-top:0;
-        padding: 20px;
-        background-color: #337ab7;
-        color:white;
-        text-align: center;
-      }
-      .sidebar-wrapper{
-        color: white;
-      }
-      img{
-        width: 180px;
-        max-width: 100%;
-        height: inherit;
-        vertical-align: middle;
-        border: 0;
-      }
+  margin-top:0;
+  padding: 20px;
+  background-color: #337ab7;
+  color:white;
+  text-align: center;
+}
+.sidebar-wrapper{
+  color: white;
+}
+.logo{
+  display: flex;
+  justify-content: center;
+  min-height: 50px;
+  border-bottom: 2px solid #287cc0;
+}
+img{
+  width: 200px;
+  text-align: center;
+  max-width: 100%;
+  height: inherit;
+  vertical-align: middle;
+  border: 0;
+}
     </style>

@@ -11,9 +11,7 @@
 						
 							</a>
 					</li>
-					<li>
-							<a href="index.php?page=dashboard"><i class="glyphicon glyphicon-home"></i> Inicio</a>
-					</li>
+					
 					<li>
 							<a href="index.php"><i class="glyphicon glyphicon-calendar"></i> Asistencia</a>
 					</li>

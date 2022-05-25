@@ -12,10 +12,7 @@
       {
         if(!empty($nm) && !empty($pass) )
         {
-
-
-          
-    
+   
           $stmt = $conn->prepare("SELECT uid, login FROM user WHERE login= ? AND password=?"); 
             $stmt->execute(array($nm,$pass));
 
@@ -34,7 +31,7 @@
 								$_SESSION['uid'] = $uid;
 								$_SESSION['login'] = $login;
             
-							header("location:../index.php?page=dashboard");
+							header("location:../index.php?page=attendance");
             }
             else
             {

@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="col-lg-8">
-			<div class="panel panel-success">
+			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Alumnos</h3>
 				</div>
