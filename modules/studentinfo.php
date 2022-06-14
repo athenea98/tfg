@@ -36,7 +36,28 @@
 							}
 						}
 						echo"</select>";
-					?>									
+					?>	
+				
+					<label for="select" class="control-label">Grupo</label>
+					<?php
+											
+						$query_groupe = "SELECT groupe.name, groupe.gid from groupe
+						INNER JOIN student_subject WHERE student_subject.gid = groupe.gid  GROUP BY groupe.name";
+						$sub=$conn->query($query_groupe);
+						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
+						echo "<select name='groupe' class='form-control' required='required'>";
+						for($i = 0; $i<count($rsub); $i++)
+						{
+							if ($_GET['groupe'] == $rsub[$i]['gid']) {
+								echo"<option value='". $rsub[$i]['gid']."' selected='selected'>".$rsub[$i]['name']."</option>";
+							}
+							else {
+								echo"<option value='". $rsub[$i]['gid']."'>".$rsub[$i]['name']."</option>";
+							}
+						}
+						echo"</select>";
+						?>		
+					<button type="submit" class="btn btn-success" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Filtrar</button>							
 				</div>
 			</div>
 		</div>

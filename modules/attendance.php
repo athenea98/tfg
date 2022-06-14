@@ -39,7 +39,7 @@
 					<?php
 											
 						$query_groupe = "SELECT groupe.name, groupe.gid from groupe
-						INNER JOIN groupe_subject_student WHERE groupe_subject_student.gid = groupe.gid AND groupe_subject_student.uid = {$_SESSION['uid']} GROUP BY groupe.name";
+						INNER JOIN student_subject WHERE student_subject.gid = groupe.gid  GROUP BY groupe.name";
 						$sub=$conn->query($query_groupe);
 						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
 						echo "<select name='groupe' class='form-control' required='required'>";
@@ -68,7 +68,7 @@
 
 
 			<?php
-				if(isset($_GET['date']) && isset($_GET['subject'])) :
+				if(isset($_GET['date']) && isset($_GET['subject']) && isset($_GET['groupe'])) :
 			?>
 			
 			<?php 
@@ -96,6 +96,7 @@
 					 $dat = $_GET['date'];
 					 $ddate = strtotime($dat);
 					 $sub=$_GET['subject'];
+					 $gro=$_GET['groupe'];
 					$que= "SELECT id, aid, ispresent  from attendance  WHERE date  =$ddate
 					AND id=$sub ORDER BY id";
 					$ret=$conn->query($que);
@@ -110,7 +111,7 @@
 
 					}
 
-					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login, student.groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$_GET['subject']} INNER JOIN groupe_subject_student WHERE student.sid = groupe_subject_student.sid AND groupe_subject_student.gid  = {$_GET['groupe']} ORDER BY lastname";
+					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login, student.groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.gid  = {$_GET['groupe']} AND student_subject.id  = {$_GET['subject']} ORDER BY lastname";
 					$stu=$conn->query($qu);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
 
@@ -160,6 +161,7 @@
 
 			<input type="hidden" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>">
 			<input type="hidden" name="subject" value="<?php print isset($_GET['subject']) ? $_GET['subject'] : ''; ?>">
+			<input type="hidden" name="groupe" value="<?php print isset($_GET['groupe']) ? $_GET['groupe'] : ''; ?>">
 			<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
 			
 			</form>
@@ -188,6 +190,7 @@
 						
 					
 							$id = $_POST['subject'];
+							$gid = $_POST['groupe'];
 							$uid = $_SESSION['uid'];
 							$p = 0;
 							$st_sid =  $_POST['st_sid'];
@@ -225,6 +228,7 @@
 						$tstamp = strtotime($date);
 							$id = $_POST['subject'];
 							$uid = $_SESSION['uid'];
+							$gid = $_POST['groupe'];
 							$p = 0;
 							$st_sid =  $_POST['st_sid'];
 							$ispresent = array();
@@ -235,8 +239,8 @@
 							for($j = 0; $j < count($st_sid); $j++)
 							{
 									
-									$stmtInsert = $conn->prepare("INSERT INTO attendance (sid, date, ispresent, uid, id) 
-								VALUES (:sid, :date, :ispresent, :uid, :id)");
+									$stmtInsert = $conn->prepare("INSERT INTO attendance (sid, date, ispresent, uid, id, gid) 
+								VALUES (:sid, :date, :ispresent, :uid, :id, :gid)");
 									
 									if (count($ispresent)) {
 										$p = (in_array($st_sid[$j], $ispresent)) ? 1 : 0;	
@@ -248,6 +252,7 @@
 									$stmtInsert->bindParam(':ispresent', $p);
 									$stmtInsert->bindParam(':uid', $uid);
 									$stmtInsert->bindParam(':id', $id); 
+									$stmtInsert->bindParam(':gid', $gid); 
 									$stmtInsert->execute();
 							
 						}
