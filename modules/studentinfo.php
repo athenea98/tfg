@@ -18,26 +18,28 @@
 				</div>
 				<div class="panel-body">
 					
+				<label for="select" class="control-label">Asignatura</label>
 					<?php
-						$output = '';
-		
-						$query_subject = "SELECT subject.name, subject.id from subject INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = {$uid}  ORDER BY subject.name";
+											
+						$query_subject = "SELECT subject.name, subject.id from subject 
+						INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = {$_SESSION['uid']}  ORDER BY subject.name";
 						$sub=$conn->query($query_subject);
 						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
-						
-						$noOfSubject = count($rsub);
-						
-						for($i = 0; $i<$noOfSubject; $i++) {
-							$output .= $rsub[$i]['name'];
-							$output .= '&nbsp;';
+						echo "<select name='subject' class='form-control' required='required'>";
+						for($i = 0; $i<count($rsub); $i++)
+						{
+							if ($_GET['subject'] == $rsub[$i]['id']) {
+								echo"<option value='". $rsub[$i]['id']."' selected='selected'>".$rsub[$i]['name']."</option>";
+							}
+							else {
+								echo"<option value='". $rsub[$i]['id']."'>".$rsub[$i]['name']."</option>";
+							}
 						}
-						print $output;
-					?>
-					
+						echo"</select>";
+					?>									
 				</div>
-			</div>			
+			</div>
 		</div>
-
 		<div class="col-lg-8">
 			<div class="panel panel-primary">
 				<div class="panel-heading">

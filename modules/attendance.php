@@ -34,7 +34,29 @@
 					?>									
 				</div>
 	
+				<div class="form-group">
+					<label for="select" class="control-label">Grupo</label>
+					<?php
+											
+						$query_groupe = "SELECT groupe.name, groupe.gid from groupe
+						INNER JOIN groupe_subject_student WHERE groupe_subject_student.gid = groupe.gid AND groupe_subject_student.uid = {$_SESSION['uid']} GROUP BY groupe.name";
+						$sub=$conn->query($query_groupe);
+						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
+						echo "<select name='groupe' class='form-control' required='required'>";
+						for($i = 0; $i<count($rsub); $i++)
+						{
+							if ($_GET['groupe'] == $rsub[$i]['gid']) {
+								echo"<option value='". $rsub[$i]['gid']."' selected='selected'>".$rsub[$i]['name']."</option>";
+							}
+							else {
+								echo"<option value='". $rsub[$i]['gid']."'>".$rsub[$i]['name']."</option>";
+							}
+						}
+						echo"</select>";
+					?>									
+				</div>
 
+				
 				<div class="form-group" data-provide="datepicker">
 					<label for="select" class="control-label">Fecha:</label>
 					<input type="date" class="form-control" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>" required>
@@ -65,6 +87,7 @@
 					<tr>
 						<th class="text-center">Login</th>
 						<th class="text-center">Alumno</th>
+						<th class="text-center">Grupo</th>
 						<th class="text-center"><input type="checkbox" class="chk-head" /> Todos presentes</th>
 					</tr>
 				</thead>
@@ -87,7 +110,7 @@
 
 					}
 
-					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$_GET['subject']}  ORDER BY lastname";
+					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login, student.groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$_GET['subject']} INNER JOIN groupe_subject_student WHERE student.sid = groupe_subject_student.sid AND groupe_subject_student.gid  = {$_GET['groupe']} ORDER BY lastname";
 					$stu=$conn->query($qu);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
 
@@ -100,6 +123,7 @@
 						if($updateFlag) {
 							echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'>" ."<input type='hidden' name='att_id[]' value='" . $attData[$i]['aid'] . "'>".  "</td>";
 							echo"<td>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
+							echo"<td>".$rstu[$i]['groupe']."</td>";
 
 							
 								if(($rstu[$i]['sid'] ==  $attData[$i]['sid']) && ($attData[$i]['ispresent']))
@@ -115,6 +139,8 @@
 							else {
 								echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'></td>";
 								echo"<td>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
+								echo"<td>".$rstu[$i]['groupe']."</td>";
+
 								echo"<td><input class='chk-present' type='checkbox' name='chbox[]' value='" . $rstu[$i]['sid'] . "'></td>";	
 							}
 							

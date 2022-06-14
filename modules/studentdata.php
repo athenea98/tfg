@@ -37,19 +37,16 @@
 				 $stmt2 = $conn->prepare($sq);
 				 $stmt2->execute();
 					$result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC); 
-					 //print_r($result2);
-					 //echo count($result2);
-						 
+											 
 				echo "<table class='table table-striped table-hover reports-table'>";
 					 echo"<tr><th>Asignatura</th>";
 						for($k=0;$k<count($result2);$k++)
 						{
-							$tmdat=$result2[$k]['date'];
-							echo"<th>".date("d-m-Y",$tmdat)."</th>";
-						}//echo(date("Y-m-d",$t));
+							$tmdat=$result2[$k]['date'];							
+						}
 							
 						echo"<th>Total</th><th colspan='2'>Porcentaje</th></tr>";
-					
+
 					 $ssql = "SELECT id FROM student_subject where $tempid=sid";
 					 $stmt3 = $conn->prepare($ssql);
 				 $stmt3->execute();
@@ -79,7 +76,6 @@
 						$ttaken++;
 						$dttaken++;
 						 if (empty($result1)) {
-								echo " <td><span class='badge' style='background-color:#d44845;'>Sin registrar</span></td>";
 								$nottaken++;
 								$dnottaken++;
 						 }else
@@ -87,13 +83,13 @@
 							$res=$result1[0]['ispresent'];
 							if($res==1)
 							{
-								echo " <td><span class='badge' style='background-color:#3C923C;'>Presentado</span></td>";
+								
 								$present++;
 								$dpresent++;	
 							}
 								else
 								{
-									echo "<td><span class='text-danger'>Falta</span></td>";
+									
 									$absent++;
 									$dabsent++;
 								}
@@ -108,20 +104,17 @@
 							echo"<td><strong>".$dpresent."</strong>/".$dtlec."</td>";
 							echo"<td>".$dtper."&nbsp;%</td>";
 							echo"</tr>";
-
 					
 					} 	 
 					echo "</table>";
 					$tlec=$ttaken-$nottaken;
 					$tper=(100*$present)/$tlec;
 					
-		
-					
+							
 				}
 				else {
 					header("location:index.php?student=invalid");
 				}
-
 		?>
 				</div>
 			</div>
