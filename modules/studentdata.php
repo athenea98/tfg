@@ -8,7 +8,7 @@
 	$strno=$_POST['rollno'];
 	
 	// Student data collection
-	$sql = "SELECT name, lastname, login, sid,rollno FROM student where $strno=rollno";
+	$sql = "SELECT sname, lastname, login, sid,rollno FROM student where $strno=rollno";
 	$stmt = $conn->prepare($sql); 
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
@@ -65,7 +65,7 @@
 					$stmt4->execute();
 						$result4 = $stmt4->fetchAll(PDO::FETCH_ASSOC);	
 						$sub=$result4[0]['name'];
-						echo "<td><h6>$sub</h6></td>";
+						echo "<td>$sub</td>";
 						for($i=0;$i<count($result2);$i++)
 						 {
 							$tmdat=$result2[$i]['date'];

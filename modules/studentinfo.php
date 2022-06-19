@@ -3,83 +3,42 @@
 	include 'config1.php';
 	$uid = $_SESSION['uid'];
 ?>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+		<script type="text/javascript" src="js/datatables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>            
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />  
+
 <div class="container">
   <div class="row">
     <div class="col-md-12 col-lg-12">
 			<h1 class="page-header">Alumnos</h1>  
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-4">
-		
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Asignaturas</h3>
-				</div>
-				<div class="panel-body">
-					
-				<label for="select" class="control-label">Asignatura</label>
-					<?php
-											
-						$query_subject = "SELECT subject.name, subject.id from subject 
-						INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = {$_SESSION['uid']}  ORDER BY subject.name";
-						$sub=$conn->query($query_subject);
-						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
-						echo "<select name='subject' class='form-control' required='required'>";
-						for($i = 0; $i<count($rsub); $i++)
-						{
-							if ($_GET['subject'] == $rsub[$i]['id']) {
-								echo"<option value='". $rsub[$i]['id']."' selected='selected'>".$rsub[$i]['name']."</option>";
-							}
-							else {
-								echo"<option value='". $rsub[$i]['id']."'>".$rsub[$i]['name']."</option>";
-							}
-						}
-						echo"</select>";
-					?>	
-				
-					<label for="select" class="control-label">Grupo</label>
-					<?php
-											
-						$query_groupe = "SELECT groupe.name, groupe.gid from groupe
-						INNER JOIN student_subject WHERE student_subject.gid = groupe.gid  GROUP BY groupe.name";
-						$sub=$conn->query($query_groupe);
-						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
-						echo "<select name='groupe' class='form-control' required='required'>";
-						for($i = 0; $i<count($rsub); $i++)
-						{
-							if ($_GET['groupe'] == $rsub[$i]['gid']) {
-								echo"<option value='". $rsub[$i]['gid']."' selected='selected'>".$rsub[$i]['name']."</option>";
-							}
-							else {
-								echo"<option value='". $rsub[$i]['gid']."'>".$rsub[$i]['name']."</option>";
-							}
-						}
-						echo"</select>";
-						?>		
-					<button type="submit" class="btn btn-success" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Filtrar</button>							
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-8">
+	
+		<div class="col-lg-12">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<h3 class="panel-title">Alumnos</h3>
 				</div>
 				<div class="panel-body">
-					<table class="table table-striped table-hover">
+					<table id="students_data" class="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th>Login</th>
-							<th>Nombre</th>
+							<th>Asigantura</th>
+							<th>Alumno</th>
+							<th>Grupo</th>
 							<th>Grado</th>
+							
+							
+							
 							
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 							$outputData = '';
-							$studentQuery = "SELECT DISTINCT name, lastname, second_lastname, login, grade FROM `user_subject` INNER JOIN student_subject INNER JOIN student WHERE user_subject.id = student_subject.id AND student_subject.sid = student.sid AND user_subject.uid = $uid ORDER BY lastname ";
+							
+							$studentQuery = "SELECT DISTINCT sname, lastname, second_lastname, groupe, login, name, grade FROM `user_subject` INNER JOIN student_subject INNER JOIN student  INNER JOIN subject WHERE user_subject.id = student_subject.id AND student_subject.sid = student.sid AND user_subject.uid = $uid AND user_subject.id = subject.id ORDER BY name";
 							
 							$stmtStudent = $conn->prepare($studentQuery); 
 							$stmtStudent->execute();
@@ -87,8 +46,9 @@
 							
 							for($i = 0; $i<count($resultStudent); $i++) {
 								$outputData .= "<tr>";
-								$outputData .= "<td>" . $resultStudent[$i]['login'] . "</td>";
-								$outputData .= "<td>" . $resultStudent[$i]['name'] ." ". $resultStudent[$i]['lastname'] ." " . $resultStudent[$i]['second_lastname'] . "</td>";
+								$outputData .= "<td>" . $resultStudent[$i]['name'] . "</td>";
+								$outputData .= "<td>" . $resultStudent[$i]['sname'] ." ". $resultStudent[$i]['lastname'] ." " . $resultStudent[$i]['second_lastname'] . "</td>";
+								$outputData .= "<td>" . $resultStudent[$i]['groupe'] ."</td>";
 								$outputData .= "<td>" . $resultStudent[$i]['grade'] ."</td>";
 								$outputData .= "</tr>";
 							}
@@ -102,3 +62,9 @@
 		</div>
 	</div>
 </div>
+<script>
+$(document).ready(function(){  
+      $('#students_data').DataTable();  
+ }); 
+
+</script>

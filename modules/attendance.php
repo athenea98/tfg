@@ -3,6 +3,12 @@
 	$updateFlag = 0;
 ?>
 
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+		<script type="text/javascript" src="js/datatables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>            
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />  
+
+
 <div class="container">
   <div class="row ">
     <div class="col-md-12 col-lg-12">
@@ -16,21 +22,21 @@
 					<label for="select" class="control-label">Asignatura</label>
 					<?php
 											
-						$query_subject = "SELECT subject.name, subject.id from subject 
-						INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = {$_SESSION['uid']}  ORDER BY subject.name";
-						$sub=$conn->query($query_subject);
-						$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
-						echo "<select name='subject' class='form-control' required='required'>";
-						for($i = 0; $i<count($rsub); $i++)
-						{
-							if ($_GET['subject'] == $rsub[$i]['id']) {
-								echo"<option value='". $rsub[$i]['id']."' selected='selected'>".$rsub[$i]['name']."</option>";
-							}
-							else {
-								echo"<option value='". $rsub[$i]['id']."'>".$rsub[$i]['name']."</option>";
-							}
-						}
-						echo"</select>";
+											$query_subject = "SELECT subject.name, subject.id from subject 
+											INNER JOIN user_subject WHERE user_subject.id = subject.id AND user_subject.uid = {$_SESSION['uid']}  ORDER BY subject.name";
+											$sub=$conn->query($query_subject);
+											$rsub=$sub->fetchAll(PDO::FETCH_ASSOC);
+											echo "<select name='subject' class='form-control' required='required'>";
+											for($i = 0; $i<count($rsub); $i++)
+											{
+												if ($_GET['subject'] == $rsub[$i]['id']) {
+													echo"<option value='". $rsub[$i]['id']."' selected='selected'>".$rsub[$i]['name']."</option>";
+												}
+												else {
+													echo"<option value='". $rsub[$i]['id']."'>".$rsub[$i]['name']."</option>";
+												}
+											}
+											echo"</select>";
 					?>									
 				</div>
 	
@@ -62,7 +68,7 @@
 					<input type="date" class="form-control" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>" required>
 				</div>
 
-				<button type="submit" class="btn btn-success" style='border-radius:0%;' name="sbt_stn"><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
+				<button type="submit" class="btn btn-success" style='border-radius:0%;' name="sbt_stn">Filtrar</button>
 			</form>
 				
 
@@ -79,10 +85,10 @@
 			<form action="index.php" method="post">
 			
 			<div class="margin-top-bottom-medium">
-				<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+				<button type="submit" class="btn btn-success btn-block" name="sbt_top">Guardar</button>
 			</div>
-			
-			<table class="table table-striped table-hover">
+			<div class="table-responsive">
+			<table id="students_data" class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th class="text-center">Login</th>
@@ -97,8 +103,8 @@
 					 $ddate = strtotime($dat);
 					 $sub=$_GET['subject'];
 					 $gro=$_GET['groupe'];
-					$que= "SELECT id, aid, ispresent  from attendance  WHERE date  =$ddate
-					AND id=$sub ORDER BY id";
+					$que= "SELECT sid, id, aid, ispresent, gid  from attendance  WHERE date  =$ddate
+					AND id=$sub AND gid =$gro ORDER BY sid";
 					$ret=$conn->query($que);
 					$attData=$ret->fetchAll(PDO::FETCH_ASSOC);
 					
@@ -111,7 +117,7 @@
 
 					}
 
-					$qu = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login, student.groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.gid  = {$_GET['groupe']} AND student_subject.id  = {$_GET['subject']} ORDER BY lastname";
+					$qu = "SELECT student.sid, student.sname, student.lastname, student.second_lastname, student.login, student.groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.gid  = {$_GET['groupe']} AND student_subject.id  = {$_GET['subject']} ORDER BY lastname";
 					$stu=$conn->query($qu);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
 
@@ -122,8 +128,8 @@
 						echo"<tr>";
 
 						if($updateFlag) {
-							echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'>" ."<input type='hidden' name='att_id[]' value='" . $attData[$i]['aid'] . "'>".  "</td>";
-							echo"<td>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
+							echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'>" ."<input type='hidden' name='att_id[]' value='" . $attData[$i]['aid'] . "'>". "<input type='hidden' name='att_gid[]' value='" . $attData[$i]['gid'] . "'>". "</td>";
+							echo"<td>".$rstu[$i]['sname']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
 							echo"<td>".$rstu[$i]['groupe']."</td>";
 
 							
@@ -139,12 +145,11 @@
 							}
 							else {
 								echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'></td>";
-								echo"<td>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
+								echo"<td>".$rstu[$i]['sname']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
 								echo"<td>".$rstu[$i]['groupe']."</td>";
-
 								echo"<td><input class='chk-present' type='checkbox' name='chbox[]' value='" . $rstu[$i]['sid'] . "'></td>";	
 							}
-							
+						
 							
 						echo"</tr>";
 					}
@@ -162,7 +167,7 @@
 			<input type="hidden" name="date" value="<?php print isset($_GET['date']) ? $_GET['date'] : ''; ?>">
 			<input type="hidden" name="subject" value="<?php print isset($_GET['subject']) ? $_GET['subject'] : ''; ?>">
 			<input type="hidden" name="groupe" value="<?php print isset($_GET['groupe']) ? $_GET['groupe'] : ''; ?>">
-			<button type="submit" class="btn btn-success btn-block" style='border-radius:0%;' name="sbt_top"><i class="glyphicon glyphicon-ok-sign"></i> Guardar</button>
+			<button type="submit" class="btn btn-success btn-block" name="sbt_top"> Guardar</button>
 			
 			</form>
 			
@@ -204,15 +209,15 @@
 							{
 									
 
-									$stmtInsert = $conn->prepare("UPDATE attendance SET ispresent = :isMarked WHERE aid = :aid"); 
+								$stmtInsert = $conn->prepare("UPDATE attendance SET ispresent = :isMarked WHERE aid = :aid"); 
 														
-									if (count($ispresent)) {
-										$p = (in_array($st_sid[$j], $ispresent)) ? 1 : 0;	
-									}
-									
-									$stmtInsert->bindParam(':isMarked', $p);
-									$stmtInsert->bindParam(':aid', $attt_aid[$j]); 
-									$stmtInsert->execute();
+								if (count($ispresent)) {
+									$p = (in_array($st_sid[$j], $ispresent)) ? 1 : 0;	
+								}
+								
+								$stmtInsert->bindParam(':isMarked', $p);
+								$stmtInsert->bindParam(':aid', $attt_aid[$j]); 
+								$stmtInsert->execute();
 								
 							}		
 						echo '<p>&nbsp;</p><div class="alert alert-dismissible alert-success">
@@ -225,7 +230,7 @@
 						
 						
 							$date = $_POST['date'];
-						$tstamp = strtotime($date);
+						    $tstamp = strtotime($date);
 							$id = $_POST['subject'];
 							$uid = $_SESSION['uid'];
 							$gid = $_POST['groupe'];
@@ -266,7 +271,13 @@
 		</div>
 	</div>
 </div>
-
+			</body>
+			</html>
 <script>
+$(document).ready(function(){  
+      $('#students_data').DataTable();  
+ }); 
+
 	$('#subjectForm').validator();	
+
 </script>

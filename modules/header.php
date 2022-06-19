@@ -26,7 +26,7 @@
       h1{
   margin-top:0;
   padding: 20px;
-  background-color: #337ab7;
+  background-color: #5F5F5F;
   color:white;
   text-align: center;
 }
@@ -48,3 +48,4 @@ img{
   border: 0;
 }
     </style>
+    

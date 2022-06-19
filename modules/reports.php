@@ -55,9 +55,9 @@
 					<label for="select" class="control-label">Fecha final:</label>
 					<input type="date" name="edate" class="form-control" value="<?php print isset($_GET['edate']) ? $_GET['edate'] : ''; ?>" required>
 				</div>
-				<button type="button" name="create_report" id="create_report" class="btn btn-success btn-sm">Generar PDF</button>
+				<button type="submit" class="btn btn-success btn-sm" name="submit">Generar PDF</button>
 				<input type="hidden" name="page" value="reports">
-				<button type="submit" class="btn btn-success" name="submit" style='border-radius:0%;'><i class="glyphicon glyphicon-filter"></i> Filtrar</button>
+				<button type="submit" class="btn btn-success btn-sm" name="submit">Filtrar</button>
 			</form>
 		</div>	
 	</div>
@@ -92,15 +92,17 @@
 				if(($sdate<$t) && ($edate<=$t) && ($edate >= $sdate))
 				{
 					
-					$query_student = "SELECT student.sid, student.name, student.lastname, student.second_lastname, student.login from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$selsub}  ORDER BY student.sid";
+					$query_student = "SELECT student.sid, student.sname, student.lastname, student.second_lastname, student.login, grade, groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.id  = {$selsub}  ORDER BY student.grade and student.groupe";
 					$stu=$conn->query($query_student);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
 				
-					echo "<table class='table table-striped table-hover reports-table'>";
+					echo "<table class='table table-striped table-bordered reports-table'>";
 					echo "<thead>";
 					echo "<tr>";
 					echo "<th>Login</th>";
 					echo "<th>Alumno</th>";
+					echo "<th>Grado</th>";
+					echo "<th>Grupo</th>";
 					for($k=$sdate;$k<=$edate;$k=$k+86400)
 					{
 						$thisDate = date( 'd-m-Y', $k );
@@ -123,8 +125,10 @@
 						$absent=0;
 						$totlec=0;
 						$perc=0;
-						echo"<tr><td><h6>".$rstu[$i]['login']."</h6></td>";
-						echo "<td><h5>".$rstu[$i]['name']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</h5></td>";
+						echo"<tr><td>".$rstu[$i]['login']."</td>";
+						echo "<td>".$rstu[$i]['sname']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
+						echo"<td>".$rstu[$i]['grade']."</td>";
+						echo"<td>".$rstu[$i]['groupe']."</td>";
 						$dsid=$rstu[$i]['sid'];
 						
 						for($j=$sdate;$j<=$edate;$j=$j+86400)
@@ -157,7 +161,7 @@
 									}
 								}else
 								{
-									echo "<td><a href='index.php?subject=" . $selsub . "&date=" . $currentDate . "'><button type='button' class='btn btn-success btn-sm' style='border-radius:0%'>Falta Asistencia</button></a></td>";
+									echo "<td><a href='index.php?subject=" . $selsub . "&date=" . $currentDate . "'><button type='button' class='btn btn-info btn-sm report_button' style='border-radius:0%'>Falta Asistencia</button></a></td>";
 								}
 							}
 						}
