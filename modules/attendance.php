@@ -117,7 +117,8 @@
 
 					}
 
-					$qu = "SELECT student.sid, student.sname, student.lastname, student.second_lastname, student.login, student.groupe from student INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.gid  = {$_GET['groupe']} AND student_subject.id  = {$_GET['subject']} ORDER BY lastname";
+					$qu = "SELECT student.sid, student.sname, student.lastname, student.second_lastname, student.login, student.groupe from student 
+					INNER JOIN student_subject WHERE student.sid = student_subject.sid AND student_subject.gid  = {$_GET['groupe']} AND student_subject.id  = {$_GET['subject']} ORDER BY lastname";
 					$stu=$conn->query($qu);
 					$rstu=$stu->fetchAll(PDO::FETCH_ASSOC);
 
@@ -128,7 +129,8 @@
 						echo"<tr>";
 
 						if($updateFlag) {
-							echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'>" ."<input type='hidden' name='att_id[]' value='" . $attData[$i]['aid'] . "'>". "<input type='hidden' name='att_gid[]' value='" . $attData[$i]['gid'] . "'>". "</td>";
+							echo"<td>".$rstu[$i]['login']."<input type='hidden' name='st_sid[]' value='" . $rstu[$i]['sid'] . "'>" 
+							."<input type='hidden' name='att_id[]' value='" . $attData[$i]['aid'] . "'>". "<input type='hidden' name='att_gid[]' value='" . $attData[$i]['gid'] . "'>". "</td>";
 							echo"<td>".$rstu[$i]['sname']." ".$rstu[$i]['lastname']." ".$rstu[$i]['second_lastname']."</td>";
 							echo"<td>".$rstu[$i]['groupe']."</td>";
 
